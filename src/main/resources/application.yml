@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Company-TECH
+  datasource:
+    url: jdbc:postgresql://localhost:5432/company_tech
+    username: postgres
+    password: Suhrob1332
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/changelogMaster.xml
+server:
+  port: 8081
