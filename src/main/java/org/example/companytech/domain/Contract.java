@@ -1,10 +1,18 @@
 package org.example.companytech.domain;
 
 
-import jakarta.persistence.*;
-import lombok.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -32,7 +40,7 @@ public class Contract {
     @Column(name = "passport_series", nullable = false)
     private String passportSeries;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private String jshshir;
 
     @Column(name = "contract_number", nullable = false)
