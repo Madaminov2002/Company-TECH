@@ -2,9 +2,9 @@ spring:
   application:
     name: Company-TECH
   datasource:
-    url: jdbc:postgresql://localhost:5432/company_tech
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: Suhrob1332
+    password: Jayxunbey2003
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
