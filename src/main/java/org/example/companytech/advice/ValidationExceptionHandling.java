@@ -1,8 +1,7 @@
-package org.example.companytech.exceptions.handling.validation;
+package org.example.companytech.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.support.MetaDataAccessException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +20,6 @@ public class ValidationExceptionHandling {
         Map<String, Map<String, String >> errors = new HashMap<>();
 
         Map<String, String> fieldErrorDtos = new HashMap<>();
-
 
         fieldErrors.forEach(fieldError -> {
             fieldErrorDtos.put(fieldError.getField(), fieldError.getDefaultMessage());
