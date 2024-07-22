@@ -2,7 +2,9 @@ package org.example.companytech.service;
 
 import org.example.companytech.domain.Product;
 import org.example.companytech.dto.req.product.ProductAddingReqDto;
+import org.example.companytech.dto.req.product.ProductNumerAutoChangeReqDto;
 import org.example.companytech.dto.req.product.ProductUpdatingReqDto;
+import org.example.companytech.exception.ProductNotFoundException;
 import org.example.companytech.exception.UnAcceptableException;
 import org.example.companytech.mapper.ProductMapper;
 import org.example.companytech.repo.ProductRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -55,6 +58,27 @@ public class ProductService {
     }
 
     public Product getById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        Optional<Product> byId = productRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new ProductNotFoundException();
+        }
+        return byId.get();
+    }
+
+    public Product autoChange(ProductNumerAutoChangeReqDto productNumerAutoChangeReqDto) {
+        Product product = getById(productNumerAutoChangeReqDto.getProductId());
+
+        Integer count = product.getCount();
+        Integer numberForAutoChange = productNumerAutoChangeReqDto.getNumberForAutoChange();
+        if (count+numberForAutoChange<0) {
+            throw new UnAcceptableException("count must not be less than 0");
+        }
+
+        int sum = count + numberForAutoChange;
+        product.setCount(sum);
+        Product saved = productRepository.save(product);
+
+        return saved;
+
     }
 }
