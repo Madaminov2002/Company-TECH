@@ -15,9 +15,9 @@ spring:
           ssl:
             enable: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/company_tech
     username: postgres
-    password: Jayxunbey2003
+    password: Suhrob1332
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
