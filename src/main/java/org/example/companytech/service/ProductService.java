@@ -27,8 +27,8 @@ public class ProductService {
 
     public void adding(ProductAddingReqDto productAddingReqDto) {
 
-        if (productAddingReqDto.getPrice().compareTo(new BigDecimal(0))<0) {
-           throw new  UnAcceptableException("Price not be less than 0");
+        if (productAddingReqDto.getPrice().compareTo(new BigDecimal(0)) < 0) {
+            throw new UnAcceptableException("Price not be less than 0");
         }
 
         Product entity = productMapper.toEntity(productAddingReqDto);
@@ -39,8 +39,6 @@ public class ProductService {
 
     public void update(ProductUpdatingReqDto productUpdatingReqDto) {
         Product entity = productMapper.toEntity(productUpdatingReqDto);
-
-        System.out.println();
 
         productRepository.updateNameAndPriceAndDescriptionAndCountAndPlaceById(
                 entity.getName(),
@@ -70,7 +68,7 @@ public class ProductService {
 
         Integer count = product.getCount();
         Integer numberForAutoChange = productNumerAutoChangeReqDto.getNumberForAutoChange();
-        if (count+numberForAutoChange<0) {
+        if (count + numberForAutoChange < 0) {
             throw new UnAcceptableException("count must not be less than 0");
         }
 

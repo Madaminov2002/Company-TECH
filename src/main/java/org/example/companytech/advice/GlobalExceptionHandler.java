@@ -5,7 +5,6 @@ import org.example.companytech.dto.ErrorResponseDto;
 import org.example.companytech.exception.CompanyNotFoundException;
 import org.example.companytech.exception.PasswordIncorrectException;
 import org.example.companytech.exception.UnAcceptableException;
-import org.example.companytech.exception.UserNameAlreadyExistsException;
 import org.example.companytech.exception.UserNameNotFoundException;
 import org.example.companytech.exception.UserNameOrEmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;

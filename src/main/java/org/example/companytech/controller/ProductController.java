@@ -22,7 +22,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @Secured("EMPLOYEE")
+//    @Secured("EMPLOYEE")
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody @Valid ProductAddingReqDto productAddingReqDto) {
 
@@ -33,7 +33,7 @@ public class ProductController {
 
     }
 
-    @Secured("EMPLOYEE")
+//    @Secured("EMPLOYEE")
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAll() {
         return ResponseEntity.ok(productService.getAll());
@@ -46,7 +46,7 @@ public class ProductController {
     }
 
 
-    @Secured("SUPER_ADMIN")
+//    @Secured("SUPER_ADMIN")
     @PostMapping("/update")
     public ResponseEntity<String> add(@RequestBody @Valid ProductUpdatingReqDto productUpdatingReqDto) {
 
@@ -56,7 +56,7 @@ public class ProductController {
         return ResponseEntity.ok("Updated Successfully");
     }
 
-    @Secured("EMPLOYEE")
+//    @Secured("EMPLOYEE")
     @PostMapping("/product-count/auto-change")
     public ResponseEntity<Product> autoChange(@RequestBody @Valid ProductNumerAutoChangeReqDto productNumerAutoChangeReqDto) {
 
