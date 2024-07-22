@@ -5,10 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,25 +15,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "verification")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table
-public class Company {
+public class Verification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
-    private String userName;
-    @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private BigDecimal capital;
-    @ManyToMany
-    private List<Role> roles;
+    private LocalTime expiryTime;
+
 }
