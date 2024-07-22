@@ -58,16 +58,13 @@ public class ProductController {
 
     @Secured("EMPLOYEE")
     @PostMapping("/product-count/auto-change")
-    public ResponseEntity<Product> autoChange(@RequestBody @Valid ProductNumerAutoChangeReqDto productNumerAutoChangeReqDto){
+    public ResponseEntity<Product> autoChange(@RequestBody @Valid ProductNumerAutoChangeReqDto productNumerAutoChangeReqDto) {
 
         Product savedEntity = productService.autoChange(productNumerAutoChangeReqDto);
 
         return ResponseEntity.ok(savedEntity);
 
     }
-
-
-
 
 
 }
