@@ -1,6 +1,19 @@
 spring:
   application:
     name: Company-TECH
+  mail:
+    host: "smtp.gmail.com"
+    port: 465
+    username: "Muxammedovjayxun@gmail.com"
+    password: "glhgmbuolybjegno"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
   datasource:
     url: jdbc:postgresql://localhost:5432/company_tech
     username: postgres

@@ -31,7 +31,7 @@ public class SecurityConfig {
             "/auth/signup_company",
             "/auth/signup_employee",
             "/auth/login_company",
-            "/auth/login_employee",
+            "/auth/login_employee"
     };
 
     @Bean
