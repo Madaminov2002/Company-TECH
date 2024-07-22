@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SignUpDtoCompany {
-    private String name;
+public class CompanyUpdateDto {
+    private Long id;
+    private String companyName;
     private String username;
-    private String email;
     private String password;
     private BigDecimal capital;
 }
