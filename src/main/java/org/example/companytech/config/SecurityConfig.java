@@ -31,7 +31,10 @@ public class SecurityConfig {
             "/auth/signup_company",
             "/auth/signup_employee",
             "/auth/login_company",
-            "/auth/login_employee"
+            "/auth/login_employee",
+            "/auth/check-exists-email/**",
+            "/auth/check-password-sent-to-email",
+            "/auth/change-password"
     };
 
     @Bean
