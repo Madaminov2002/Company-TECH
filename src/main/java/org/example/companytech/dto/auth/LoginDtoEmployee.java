@@ -1,11 +1,11 @@
-package org.example.companytech.dto;
+package org.example.companytech.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginDtoCompany {
+public class LoginDtoEmployee {
     private String username;
     private String password;
 }

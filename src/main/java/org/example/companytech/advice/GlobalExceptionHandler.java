@@ -1,11 +1,14 @@
 package org.example.companytech.advice;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.companytech.dto.ErrorResponseDto;
+import org.example.companytech.dto.auth.ErrorResponseDto;
 import org.example.companytech.exception.CompanyNotFoundException;
 import org.example.companytech.exception.EmailNotFoundException;
+import org.example.companytech.exception.EmployeeNotFoundException;
+import org.example.companytech.exception.ExportHistoryNotFoundException;
 import org.example.companytech.exception.NoAuthorityException;
 import org.example.companytech.exception.PasswordIncorrectException;
+import org.example.companytech.exception.ProductNotFoundException;
 import org.example.companytech.exception.UnAcceptableException;
 import org.example.companytech.exception.UserNameNotFoundException;
 import org.example.companytech.exception.UserNameOrEmailAlreadyExistsException;
@@ -34,8 +37,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok(
                 ErrorResponseDto.builder()
                         .message(exception.getMessage())
-                        .status(HttpStatus.BAD_REQUEST)
-                        .code(HttpServletResponse.SC_BAD_REQUEST)
+                        .status(HttpStatus.NOT_FOUND)
+                        .code(HttpServletResponse.SC_NOT_FOUND)
                         .build()
         );
     }
@@ -74,7 +77,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoAuthorityException.class)
-    public ResponseEntity<ErrorResponseDto> isNotYours(NoAuthorityException exception) {
+    public ResponseEntity<ErrorResponseDto> noAuthority(NoAuthorityException exception) {
         return ResponseEntity.ok(
                 ErrorResponseDto.builder()
                         .message(exception.getMessage())
@@ -89,8 +92,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok(
                 ErrorResponseDto.builder()
                         .message(exception.getMessage())
-                        .status(HttpStatus.BAD_REQUEST)
-                        .code(HttpServletResponse.SC_BAD_REQUEST)
+                        .status(HttpStatus.NOT_FOUND)
+                        .code(HttpServletResponse.SC_NOT_FOUND)
                         .build()
         );
     }
@@ -102,6 +105,39 @@ public class GlobalExceptionHandler {
                         .message(exception.getMessage())
                         .status(HttpStatus.BAD_REQUEST)
                         .code(HttpServletResponse.SC_BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> productNotFound(ProductNotFoundException exception) {
+        return ResponseEntity.ok(
+                ErrorResponseDto.builder()
+                        .message(exception.getMessage())
+                        .status(HttpStatus.NOT_FOUND)
+                        .code(HttpServletResponse.SC_NOT_FOUND)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ExportHistoryNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> exportHistoryNotFound(ExportHistoryNotFoundException exception) {
+        return ResponseEntity.ok(
+                ErrorResponseDto.builder()
+                        .message(exception.getMessage())
+                        .status(HttpStatus.NOT_FOUND)
+                        .code(HttpServletResponse.SC_NOT_FOUND)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> employeeHistoryNotFound(EmployeeNotFoundException exception) {
+        return ResponseEntity.ok(
+                ErrorResponseDto.builder()
+                        .message(exception.getMessage())
+                        .status(HttpStatus.NOT_FOUND)
+                        .code(HttpServletResponse.SC_NOT_FOUND)
                         .build()
         );
     }

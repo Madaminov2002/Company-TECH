@@ -4,14 +4,15 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.example.companytech.domain.Company;
 import org.example.companytech.domain.ForgotPassword;
-import org.example.companytech.dto.ChangePasswordDto;
-import org.example.companytech.dto.CheckDto;
-import org.example.companytech.dto.CompanyUpdateDto;
-import org.example.companytech.dto.ForgotPasswordDto;
-import org.example.companytech.dto.LoginDtoCompany;
-import org.example.companytech.dto.LoginDtoEmployee;
-import org.example.companytech.dto.SignUpDtoCompany;
-import org.example.companytech.dto.SignUpDtoEmployee;
+import org.example.companytech.dto.auth.ChangePasswordDto;
+import org.example.companytech.dto.auth.CheckDto;
+import org.example.companytech.dto.auth.CompanyUpdateDto;
+import org.example.companytech.dto.auth.ForgotPasswordDto;
+import org.example.companytech.dto.auth.LoginDtoCompany;
+import org.example.companytech.dto.auth.LoginDtoEmployee;
+import org.example.companytech.dto.auth.RoleUpdateDto;
+import org.example.companytech.dto.auth.SignUpDtoCompany;
+import org.example.companytech.dto.auth.SignUpDtoEmployee;
 import org.example.companytech.jwt.JwtResponse;
 import org.example.companytech.projection.CompanyDtoProjection;
 import org.example.companytech.projection.ForgotPasswordProjection;
@@ -77,6 +78,11 @@ public class AuthController {
     @PostMapping("/change-password")
     public ResponseEntity<CompanyDtoProjection> changePassword(@RequestBody ChangePasswordDto dto) {
         return ResponseEntity.ok(authService.checkUserEnabledFromForgotPasswordAndChangePassword(dto));
+    }
+    @PutMapping("/update-role-employee")
+    @PreAuthorize("hasRole('SUPER ADMIN')")
+    public ResponseEntity<String> updateRoleEmployee(@RequestBody RoleUpdateDto dto) {
+        return ResponseEntity.ok(authService.updateRoleEmployee(dto));
     }
 
 

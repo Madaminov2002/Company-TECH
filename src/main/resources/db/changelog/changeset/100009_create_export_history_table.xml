@@ -3,14 +3,14 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
-    <changeSet id="100006" author="Suhrob Madaminov">
+    <changeSet id="100009" author="Suhrob Madaminov">
         <sql dbms="postgresql" >
-            CREATE TABLE import_history (
+            CREATE TABLE export_history (
                                             id BIGSERIAL PRIMARY KEY,
-                                            product_name VARCHAR(255) NOT NULL,
                                             count INT NOT NULL,
-                                            price DECIMAL(19, 2) NOT NULL,
-                                            import_date DATE NOT NULL
+                                            date DATE NOT NULL,
+                                            product_id BIGINT,
+                                            FOREIGN KEY (product_id) REFERENCES product(id)
             );
 
         </sql>

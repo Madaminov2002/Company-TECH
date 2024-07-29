@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class Product {
     @Column(nullable = false)
     private Integer count;
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
     @Column(nullable = false)
     private String place;
 }

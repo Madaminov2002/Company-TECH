@@ -1,4 +1,4 @@
-package org.example.companytech.dto;
+package org.example.companytech.dto.auth;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ChangePasswordDto {
+public class ForgotPasswordDto {
     private String email;
-    private String newPassword;
+    private String password;
 }

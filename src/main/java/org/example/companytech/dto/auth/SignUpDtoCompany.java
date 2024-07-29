@@ -1,4 +1,4 @@
-package org.example.companytech.dto;
+package org.example.companytech.dto.auth;
 
 import java.math.BigDecimal;
 import lombok.Getter;

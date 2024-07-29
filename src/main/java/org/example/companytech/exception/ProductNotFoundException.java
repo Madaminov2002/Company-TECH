@@ -1,7 +1,7 @@
 package org.example.companytech.exception;
 
 public class ProductNotFoundException extends RuntimeException {
-    public ProductNotFoundException() {
-        super("Product Not Found");
+    public ProductNotFoundException(Long id) {
+        super("Product Not Found with "+id);
     }
 }
