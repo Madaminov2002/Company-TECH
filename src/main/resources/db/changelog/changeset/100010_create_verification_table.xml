@@ -3,9 +3,15 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
-    <changeSet id="100012" author="Suhrob Madaminov">
+    <changeSet id="100010" author="Suhrob Madaminov">
         <sql dbms="postgresql" >
-            alter table company add column email varchar
+            CREATE TABLE verification (
+                                          id BIGSERIAL PRIMARY KEY,
+                                          email varchar,
+                                          password VARCHAR(255),
+                                          expiry_time TIME
+            )
+
         </sql>
     </changeSet>
 </databaseChangeLog>

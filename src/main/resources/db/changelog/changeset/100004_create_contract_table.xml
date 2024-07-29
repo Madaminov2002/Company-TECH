@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="100009" author="Jayxunbey">
+    <changeSet id="100004" author="Jayxunbey">
 
         <sql dbms="postgresql">
             CREATE TABLE contract

@@ -25,7 +25,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .subject(employee.getUsername())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 600000 * 1000))
+                .expiration(new Date(System.currentTimeMillis() + 7200000))
                 .claim("roles", roles.toString())
                 .signWith(key())
                 .compact();

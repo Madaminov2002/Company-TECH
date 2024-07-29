@@ -5,10 +5,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
     <changeSet id="100005" author="Suhrob Madaminov">
         <sql dbms="postgresql" >
-            create table employee_roles(
-                                   employee_id BIGINT references employee(id) ,
-                                   roles_id BIGINT references roles(id)
-            )
+            CREATE TABLE employee
+            (
+                id          BIGSERIAL PRIMARY KEY,
+                username   VARCHAR(255) NOT NULL,
+                company_id  BIGINT REFERENCES company (id),
+                password    VARCHAR      not null,
+                contract_id BIGINT references contract (id)
+            );
         </sql>
     </changeSet>
 </databaseChangeLog>

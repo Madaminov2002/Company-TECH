@@ -3,15 +3,12 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
-    <changeSet id="100011" author="Suhrob Madaminov">
+    <changeSet id="100006" author="Suhrob Madaminov">
         <sql dbms="postgresql" >
-            CREATE TABLE verification (
-                                          id BIGSERIAL PRIMARY KEY,
-                                          email varchar,
-                                          password VARCHAR(255),
-                                          expiry_time TIME
+            create table employee_roles(
+                                   employee_id BIGINT references employee(id) ,
+                                   roles_id BIGINT references roles(id)
             )
-
         </sql>
     </changeSet>
 </databaseChangeLog>

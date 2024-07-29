@@ -1,5 +1,6 @@
 package org.example.companytech.repo;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import javax.swing.text.StyledEditorKit;
 import org.example.companytech.domain.Company;
@@ -23,6 +24,10 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     void changePassword(@Param("password") String password, @Param("email") String email);
     @Query(nativeQuery = true,value = "select company.user_name,company.password,company.email from company where email=:email")
     CompanyDtoProjection getChangedPasswordUser(@Param("email")String email);
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,value = "update company set capital=:sum")
+    void updateCapital(@Param("sum")BigDecimal sum);
 
 
 }

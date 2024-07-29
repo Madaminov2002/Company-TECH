@@ -18,15 +18,17 @@ import org.example.companytech.domain.Employee;
 import org.example.companytech.domain.ForgotPassword;
 import org.example.companytech.domain.Role;
 import org.example.companytech.domain.Verification;
-import org.example.companytech.dto.ChangePasswordDto;
-import org.example.companytech.dto.CompanyUpdateDto;
-import org.example.companytech.dto.LoginDtoCompany;
-import org.example.companytech.dto.LoginDtoEmployee;
-import org.example.companytech.dto.SendMailDto;
-import org.example.companytech.dto.SignUpDtoCompany;
-import org.example.companytech.dto.SignUpDtoEmployee;
+import org.example.companytech.dto.auth.ChangePasswordDto;
+import org.example.companytech.dto.auth.CompanyUpdateDto;
+import org.example.companytech.dto.auth.LoginDtoCompany;
+import org.example.companytech.dto.auth.LoginDtoEmployee;
+import org.example.companytech.dto.auth.RoleUpdateDto;
+import org.example.companytech.dto.auth.SendMailDto;
+import org.example.companytech.dto.auth.SignUpDtoCompany;
+import org.example.companytech.dto.auth.SignUpDtoEmployee;
 import org.example.companytech.exception.CompanyNotFoundException;
 import org.example.companytech.exception.EmailNotFoundException;
+import org.example.companytech.exception.EmployeeNotFoundException;
 import org.example.companytech.exception.NoAuthorityException;
 import org.example.companytech.exception.PasswordIncorrectException;
 import org.example.companytech.exception.UserNameNotFoundException;
@@ -248,6 +250,15 @@ public class AuthService {
         }
         companyRepository.changePassword(passwordEncoder.encode(dto.getNewPassword()), dto.getEmail());
         return companyRepository.getChangedPasswordUser(dto.getEmail());
+    }
+
+    public String updateRoleEmployee(RoleUpdateDto roleUpdateDto) {
+        Optional<Employee> employee = employeeRepository.findByUsername(roleUpdateDto.getUsername());
+        if (employee.isEmpty()) {
+            throw new EmployeeNotFoundException(roleUpdateDto.getUsername());
+        }
+        employeeRepository.updateRoleEmployee(roleUpdateDto.getUsername(), roleUpdateDto.getRoleId());
+        return "Role updated successfully";
     }
 
 }

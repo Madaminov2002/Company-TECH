@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class ExportHistory {
     @Column(nullable = false)
     private Integer count;
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
     @ManyToOne
     private Product product;
 
