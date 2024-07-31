@@ -9,28 +9,39 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.companytech.domain.Company;
 import org.example.companytech.domain.Contract;
 import org.example.companytech.domain.Employee;
+import org.example.companytech.domain.ForgotPassword;
 import org.example.companytech.domain.Role;
 import org.example.companytech.domain.Verification;
-import org.example.companytech.dto.CompanyUpdateDto;
-import org.example.companytech.dto.LoginDtoCompany;
-import org.example.companytech.dto.LoginDtoEmployee;
-import org.example.companytech.dto.SendMailDto;
-import org.example.companytech.dto.SignUpDtoCompany;
-import org.example.companytech.dto.SignUpDtoEmployee;
+import org.example.companytech.dto.auth.ChangePasswordDto;
+import org.example.companytech.dto.auth.CompanyUpdateDto;
+import org.example.companytech.dto.auth.LoginDtoCompany;
+import org.example.companytech.dto.auth.LoginDtoEmployee;
+import org.example.companytech.dto.auth.RoleUpdateDto;
+import org.example.companytech.dto.auth.SendMailDto;
+import org.example.companytech.dto.auth.SignUpDtoCompany;
+import org.example.companytech.dto.auth.SignUpDtoEmployee;
 import org.example.companytech.exception.CompanyNotFoundException;
+import org.example.companytech.exception.EmailNotFoundException;
+import org.example.companytech.exception.EmployeeNotFoundException;
+import org.example.companytech.exception.NoAuthorityException;
 import org.example.companytech.exception.PasswordIncorrectException;
 import org.example.companytech.exception.UserNameNotFoundException;
 import org.example.companytech.exception.UserNameOrEmailAlreadyExistsException;
+import org.example.companytech.exception.UserNotEnableForChangingPasswordException;
 import org.example.companytech.jwt.JwtProvider;
 import org.example.companytech.jwt.JwtResponse;
+import org.example.companytech.projection.CompanyDtoProjection;
+import org.example.companytech.projection.ForgotPasswordProjection;
 import org.example.companytech.repo.CompanyRepository;
 import org.example.companytech.repo.ContractRepository;
 import org.example.companytech.repo.EmployeeRepository;
+import org.example.companytech.repo.ForgotPasswordRepository;
 import org.example.companytech.repo.VerificationRepository;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -47,6 +58,7 @@ public class AuthService {
     private final EmployeeRepository employeeRepository;
     private final VerificationRepository verificationRepository;
     private final JavaMailSender mailSender;
+    private final ForgotPasswordRepository forgotPasswordRepository;
 
     public Company dtoToeEntityCompany(SignUpDtoCompany dtoCompany) {
         return Company.builder()
@@ -60,7 +72,7 @@ public class AuthService {
     }
 
     public JwtResponse signupCompany(SignUpDtoCompany dtoCompany) {
-        if (companyRepository.existsByUserName(dtoCompany.getUsername()) && companyRepository.existsByEmail(dtoCompany.getEmail())) {
+        if (companyRepository.existsByUserName(dtoCompany.getUsername()) || companyRepository.existsByEmail(dtoCompany.getEmail())) {
             throw new UserNameOrEmailAlreadyExistsException(dtoCompany.getUsername(), dtoCompany.getEmail());
         }
 
@@ -132,7 +144,7 @@ public class AuthService {
         verificationRepository.save(
                 Verification.builder()
                         .email(email)
-                        .password(password)
+                        .password(passwordEncoder.encode(password))
                         .expiryTime(LocalTime.now().plusHours(2L))
                         .build()
         );
@@ -167,10 +179,10 @@ public class AuthService {
     public Company checking(String password, Long companyId) {
         Company company = companyRepository.findById(companyId).get();
         Verification verification = verificationRepository.findByEmail(company.getEmail());
-        if (password.equals(verification.getPassword()) && verification.getExpiryTime().isAfter(LocalTime.now())) {
+        if (passwordEncoder.matches(password, verification.getPassword()) && verification.getExpiryTime().isAfter(LocalTime.now())) {
             return company;
         }
-        throw new PasswordIncorrectException(password+" or password expiry time is finished ");
+        throw new PasswordIncorrectException(password + " or password expiry time is finished ");
     }
 
     public Company updateCompany(CompanyUpdateDto updateDto) {
@@ -190,14 +202,63 @@ public class AuthService {
             company.setPassword(updateDto.getPassword());
         }
 
-        if (updateDto.getCompanyName() != null){
+        if (updateDto.getCompanyName() != null) {
             company.setName(updateDto.getCompanyName());
         }
 
-        if (updateDto.getCapital() != null){
+        if (updateDto.getCapital() != null) {
             company.setCapital(updateDto.getCapital());
         }
 
         return companyRepository.save(company);
     }
+
+    public ForgotPassword generatePasswordAndSaveToForgotPassword(String email) throws MessagingException {
+        Optional<Company> company = companyRepository.findByEmail(email);
+        if (company.isEmpty()) {
+            throw new CompanyNotFoundException(email);
+        }
+        if (!company.get().getRoles().get(0).getName().equals("SUPER ADMIN")) {
+            throw new NoAuthorityException();
+        }
+        int password = new Random().nextInt(100000, 1000000);
+        sendMail(String.valueOf(password), email);
+        return forgotPasswordRepository.save(
+                ForgotPassword.builder()
+                        .email(email)
+                        .password(passwordEncoder.encode(String.valueOf(password)))
+                        .build()
+        );
+    }
+
+    public ForgotPasswordProjection checkForgotPassword(String password, String email) {
+        var forgotPasswordByEmailAndPassword = forgotPasswordRepository.findForgotPasswordByEmail(email);
+        if (forgotPasswordByEmailAndPassword == null) {
+            throw new EmailNotFoundException(email);
+        }
+        if (!passwordEncoder.matches(password, forgotPasswordByEmailAndPassword.getPassword())) {
+            throw new PasswordIncorrectException(password);
+        }
+        forgotPasswordRepository.updateEnabledToTrue(email);
+        return forgotPasswordByEmailAndPassword;
+    }
+
+    public CompanyDtoProjection checkUserEnabledFromForgotPasswordAndChangePassword(ChangePasswordDto dto) {
+        Boolean enabled = forgotPasswordRepository.checkByEmailEnabled(dto.getEmail());
+        if (enabled == null) {
+            throw new UserNotEnableForChangingPasswordException(dto.getEmail());
+        }
+        companyRepository.changePassword(passwordEncoder.encode(dto.getNewPassword()), dto.getEmail());
+        return companyRepository.getChangedPasswordUser(dto.getEmail());
+    }
+
+    public String updateRoleEmployee(RoleUpdateDto roleUpdateDto) {
+        Optional<Employee> employee = employeeRepository.findByUsername(roleUpdateDto.getUsername());
+        if (employee.isEmpty()) {
+            throw new EmployeeNotFoundException(roleUpdateDto.getUsername());
+        }
+        employeeRepository.updateRoleEmployee(roleUpdateDto.getUsername(), roleUpdateDto.getRoleId());
+        return "Role updated successfully";
+    }
+
 }

@@ -5,9 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,21 +14,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "forgot_password")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-@Table(name = "export_history")
-public class ExportHistory {
+public class ForgotPassword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
     @Column(nullable = false)
-    private Integer count;
+    private String email;
     @Column(nullable = false)
-    private LocalDate date;
-    @ManyToOne
-    private Product product;
-
+    private String password;
+    @Builder.Default
+    private Boolean enabled = Boolean.FALSE;
 
 }

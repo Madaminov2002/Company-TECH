@@ -1,5 +1,9 @@
 package org.example.companytech.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import org.example.companytech.domain.Product;
 import org.example.companytech.dto.req.product.ProductAddingReqDto;
 import org.example.companytech.dto.req.product.ProductNumerAutoChangeReqDto;
@@ -9,11 +13,6 @@ import org.example.companytech.exception.UnAcceptableException;
 import org.example.companytech.mapper.ProductMapper;
 import org.example.companytech.repo.ProductRepository;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -32,7 +31,7 @@ public class ProductService {
         }
 
         Product entity = productMapper.toEntity(productAddingReqDto);
-        entity.setCreatedAt(LocalDateTime.now());
+        entity.setCreatedAt(LocalDate.now());
 
         productRepository.save(entity);
     }
@@ -58,7 +57,7 @@ public class ProductService {
     public Product getById(Long id) {
         Optional<Product> byId = productRepository.findById(id);
         if (byId.isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException(id);
         }
         return byId.get();
     }
