@@ -25,12 +25,19 @@ public class ImportHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String productName;
-    @Column(nullable = false)
-    private Integer count;
+
     @Column(nullable = false)
     private BigDecimal price;
+
     @Column(nullable = false)
+    private Integer count;
+
+    @Column(nullable = false,name = "full_price")
+    private BigDecimal fullPrice;
+
+    @Column(nullable = false, name = "import_date")
     private LocalDate importDate;
 }
