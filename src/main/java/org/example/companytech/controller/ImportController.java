@@ -1,6 +1,7 @@
 package org.example.companytech.controller;
 
 import org.example.companytech.domain.ImportHistory;
+import org.example.companytech.dto.export.ReportDto;
 import org.example.companytech.dto.req.importe.ImportHistoryReqDto;
 import org.example.companytech.service.ImportHistoryService;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,14 @@ public class ImportController {
     public ResponseEntity<List<ImportHistory>> getAll(){
         List<ImportHistory> all = importHistoryService.getAll();
         return ResponseEntity.ok(all);
+    }
+
+    @GetMapping("/monthly-report")
+    public void getMonthlyReport(@RequestBody ReportDto reportDto){
+
+        importHistoryService.reportMonthly(reportDto);
+
+
     }
 
 }
