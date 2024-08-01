@@ -29,5 +29,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(nativeQuery = true,value = "update company set capital=:sum")
     void updateCapital(@Param("sum")BigDecimal sum);
 
+    @Transactional
+    @Modifying
+    @Query("update Company c set c.capital = ?1 where c.name = ?2")
+    int updateCapitalByName(BigDecimal capital, String name);
 
 }
